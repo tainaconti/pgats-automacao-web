@@ -1,0 +1,14 @@
+{
+  "name": "Taina",
+  "password": "T@ina_1234",
+  "firstName": "Taina",
+  "lastName": "QA",
+  "company": "Teste SA",
+  "address1": "Rua da Automacao, 100",
+  "address2": "Sala 7",
+  "country": "Canada",
+  "state": "Ontario",
+  "city": "Toronto",
+  "zipcode": "M5H 2N2",
+  "mobile": "+1 416 555 1111"
+}
