@@ -22,18 +22,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Cypress tests (headless)
+      - name: Run Cypress tests (Chrome headless)
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
-          headless: true
-          config-file: cypress.config.js
+          config-file: cypress.config.js  # Headless é padrão, não precisa declarar
 
-      - name: Generate Mochawesome report
+      - name: Generate Mochawesome HTML report
         if: always()
         run: |
-          npx mochawesome-merge "cypress/reports/*.json" > "cypress/reports/mochawesome.json"
-          npx marge "cypress/reports/mochawesome.json" -f index -o "cypress/reports/html"
+          if ls cypress/reports/json/*.json 1> /dev/null 2>&1; then
+            npx mochawesome-merge "cypress/reports/json/*.json" > "cypress/reports/mochawesome.json"
+            npx marge "cypress/reports/mochawesome.json" -f index -o "cypress/reports/html"
+          else
+            echo "No JSON reports found to merge."
+          fi
 
       - name: Upload HTML report
         if: always()
@@ -41,10 +44,3 @@ jobs:
         with:
           name: cypress-html-report
           path: cypress/reports/html
-
-      - name: Upload Cypress screenshots (optional)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
